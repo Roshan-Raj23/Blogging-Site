@@ -38,6 +38,7 @@ export default function PostForm({post}) {
             // const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
 
             const file = await appwriteService.uploadFile(data.image[0])
+            console.log("Success")
 
             if (file) {
                 const fileId = file.$id
@@ -47,6 +48,7 @@ export default function PostForm({post}) {
                     userID: userData.$id
                 })
 
+                console.log(dbPost.$id);
                 if (dbPost)
                     navigate(`/post/${dbPost.$id}`)
             }
@@ -91,12 +93,13 @@ export default function PostForm({post}) {
                     label="Slug :"
                     placeholder="Slug"
                     className="mb-4"
+                    checkDisabled = {true}
                     {...register("slug", { required: true })}
                     onInput={(e) => {
                         setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
                     }}
                 />
-                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+                {/* <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} /> */}
             </div>
             <div className="w-1/3 px-2">
                 <Input
@@ -121,9 +124,7 @@ export default function PostForm({post}) {
                     className="mb-4"
                     {...register("status", { required: true })}
                 />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
-                    {post ? "Update" : "Submit"}
-                </Button>
+                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full" text = {post ? "Update Post" : "Add Post"} />
             </div>
         </form>
     )

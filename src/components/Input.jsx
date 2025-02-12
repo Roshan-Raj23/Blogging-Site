@@ -5,6 +5,7 @@ const Input = React.forwardRef(function Input({
     label,
     type = "text",
     className = "",
+    checkDisabled = false,
     ...props
 } , ref){
     const id = useId();
@@ -18,7 +19,7 @@ const Input = React.forwardRef(function Input({
             </label>}
             <input 
             className={`px-3 py-2 rounded-lg bg-white text-black outline-none focus:bg-gray-50 duration-200 border border-gray-200 w-full ${className}`}
-            type={type} ref={ref} {...props} id={id}/>
+            type={type} ref={ref} {...props} id={id} disabled = {checkDisabled}/>
         </div>
     )
 } )
