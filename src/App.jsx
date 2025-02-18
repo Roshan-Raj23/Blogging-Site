@@ -8,7 +8,7 @@ import authService from "./appwrite/auth";
 export default function App() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  
+
   // authService.createAccount("roshanraj@gmail.com" , "something" , "Roshan Raj");
   // authService.login("roshanraj1543@gmail.com" , "123456789")
   // authService.logout();

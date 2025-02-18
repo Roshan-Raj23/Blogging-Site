@@ -19,6 +19,9 @@ export default function PostForm({post}) {
     const navigate = useNavigate()
     const userData = useSelector((state) => state.auth.userData)
 
+    if (userData.$id)
+        console.log("This is : " , userData.$id , "\n")
+
     const submit = async (data) => {
         if (post) {
             const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
@@ -37,18 +40,26 @@ export default function PostForm({post}) {
         } else {
             // const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
 
+            // TODO: check for improvements
             const file = await appwriteService.uploadFile(data.image[0])
-            console.log("Success")
 
             if (file) {
+                // console.log("This is : " , userData.$id)
+                // console.log(data);
+
                 const fileId = file.$id
                 data.featuredImage = fileId
                 const dbPost = await appwriteService.createPost({
                     ...data,
+                    // title: data.title,
+                    // slug: data.slug,
+                    // content: data.content,
+                    // featuredImage: data.featuredImage,
+                    // status: data.status,
                     userID: userData.$id
                 })
 
-                console.log(dbPost.$id);
+                console.log("Uploaded")
                 if (dbPost)
                     navigate(`/post/${dbPost.$id}`)
             }
@@ -99,7 +110,7 @@ export default function PostForm({post}) {
                         setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
                     }}
                 />
-                {/* <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} /> */}
+                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
             </div>
             <div className="w-1/3 px-2">
                 <Input
@@ -124,7 +135,7 @@ export default function PostForm({post}) {
                     className="mb-4"
                     {...register("status", { required: true })}
                 />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full" text = {post ? "Update Post" : "Add Post"} />
+                <Button type="submit" bgcolor={post ? "bg-green-500" : undefined} className="w-full" text = {post ? "Update Post" : "Add Post"} />
             </div>
         </form>
     )

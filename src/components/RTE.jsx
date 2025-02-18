@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Editor } from "@tinymce/tinymce-react"
 import { Controller } from "react-hook-form"
+import conf from "../config/conf"
 
 export default function RTE({name, control , label , defaultValue = ""}) {
     
@@ -13,6 +14,7 @@ export default function RTE({name, control , label , defaultValue = ""}) {
             control={control}
             render = {({field: {onChange}}) => (
                 <Editor
+                    apiKey={`"${conf.TINY_API_KEY}"`}
                     initialValue={defaultValue}
                     init={{
                         initialValue: defaultValue,

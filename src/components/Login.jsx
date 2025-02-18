@@ -16,8 +16,8 @@ export default function Login() {
     const login = async (data) => {
         setError("");
         try {
-            console.log("data ");
-            console.log(data);
+            // console.log("data : ");
+            // console.log(data);
             const session = await authService.login(data.email , data.password);
 
             if (session) {
@@ -27,7 +27,7 @@ export default function Login() {
                 navigate("/");
             }
         } catch (error) {
-            console.log("HELLO");
+            // console.log("HELLO");
             setError(error.message);
         }
     }
@@ -45,8 +45,7 @@ export default function Login() {
                     Don&apos;t have any account?&nbsp;
                     <Link
                         to="/signup"
-                        className="font-medium text-primary transition-all duration-200 hover:underline"
-                    >
+                        className="font-medium text-primary transition-all duration-200 hover:underline">
                         Sign Up
                     </Link>
                 </p>

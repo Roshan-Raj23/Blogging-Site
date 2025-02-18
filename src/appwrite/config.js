@@ -106,11 +106,11 @@ export class Service {
         }
     }
 
-    async deleteFile(fileID) {
+    async deleteFile(fileId) {
         try {
             await this.bucket.deleteFile(
                 conf.appBucketID,
-                fileID
+                fileId
             )
             return true;
         } catch (error) {
@@ -119,10 +119,10 @@ export class Service {
         }
     }
 
-    getFilePreviewUrl(fileID) {
+    getFilePreview(fileId) {
         return this.bucket.getFilePreview(
             conf.appBucketID, 
-            fileID
+            fileId
         )
     }
 
