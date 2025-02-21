@@ -18,7 +18,7 @@ export default function PostForm({post}) {
 
     const navigate = useNavigate()
     const userData = useSelector((state) => state.auth.userData)
-
+    
     if (userData.$id)
         console.log("This is : " , userData.$id , "\n")
 
@@ -123,7 +123,7 @@ export default function PostForm({post}) {
                 {post && (
                     <div className="w-full mb-4">
                         <img
-                            src={appwriteService.getFilePreviewUrl(post.featuredImage)}
+                            src={appwriteService.getFilePreview(post.featuredImage)}
                             alt={post.title}
                             className="rounded-lg"
                         />
