@@ -8,11 +8,14 @@ export default function Header() {
     const navigate = useNavigate();
 
     const navItems = [
-        {
-          name: 'Home',
-          slug: "/",
-          active: true
-        }, 
+
+        // Probably we don't need home as we already have logo for that 
+        // {
+        //   name: 'Home',
+        //   slug: "/",
+        //   active: true
+        // }, 
+        
         {
           name: "Login",
           slug: "/login",

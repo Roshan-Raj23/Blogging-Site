@@ -9,12 +9,6 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  // authService.createAccount("roshanraj@gmail.com" , "something" , "Roshan Raj");
-  // authService.login("roshanraj1543@gmail.com" , "123456789")
-  // authService.logout();
-
-  
-
   useEffect(() => {
     authService.getCurrentUser()
       .then((userData) => {
@@ -52,9 +46,11 @@ export default function App() {
 
 
   return !loading ? (
-    <div className="min-w-full">
+    <div className="min-w-full min-h-screen flex flex-col">
       <Header />
-      <Outlet />
+      <main className="flex-grow flex justify-center items-center">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   ) : null;

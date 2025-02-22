@@ -31,7 +31,8 @@ export class AuthService {
         try { 
             return await this.account.createEmailPasswordSession(email, password);
         } catch {
-            console.log("Wrong Email or Password");
+            // console.log("Wrong Email or Password");
+            return null;
         }
     }
 
@@ -48,8 +49,9 @@ export class AuthService {
         try {
             const test = await this.account.deleteSessions();
             return test
-        } catch (error) {
-            console.log('Error logging out:', error);
+        } catch {
+            // console.log('Error logging out:', error);
+            return null;
         }
     }
 

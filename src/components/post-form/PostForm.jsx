@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect , useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button , Input , Select , RTE } from "./../index"
 import appwriteService from "../../appwrite/config"
@@ -10,7 +10,7 @@ export default function PostForm({post}) {
     const { register , handleSubmit , watch , setValue , control , getValues} = useForm({
         defaultValues: {
             title: post?.title || "",
-            slug: post?.slug || "",
+            slug: post?.$id || "",
             content: post?.content || "",
             status: post?.status || "active",
         }
@@ -18,12 +18,11 @@ export default function PostForm({post}) {
 
     const navigate = useNavigate()
     const userData = useSelector((state) => state.auth.userData)
-    
-    if (userData.$id)
-        console.log("This is : " , userData.$id , "\n")
+    const [error , setError] = useState("")
 
     const submit = async (data) => {
         if (post) {
+            console.log(post);
             const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
 
             if (file) {
@@ -38,30 +37,22 @@ export default function PostForm({post}) {
             if (dbPost)
                 navigate(`/post/${dbPost.$id}`)
         } else {
-            // const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
-
-            // TODO: check for improvements
-            const file = await appwriteService.uploadFile(data.image[0])
-
-            if (file) {
-                // console.log("This is : " , userData.$id)
-                // console.log(data);
-
-                const fileId = file.$id
-                data.featuredImage = fileId
-                const dbPost = await appwriteService.createPost({
-                    ...data,
-                    // title: data.title,
-                    // slug: data.slug,
-                    // content: data.content,
-                    // featuredImage: data.featuredImage,
-                    // status: data.status,
-                    userID: userData.$id
-                })
-
-                console.log("Uploaded")
-                if (dbPost)
-                    navigate(`/post/${dbPost.$id}`)
+            if (!data.image[0])
+                setError("Please upload an image")
+            else {
+                const file = await appwriteService.uploadFile(data.image[0])
+    
+                if (file) {
+                    const fileId = file.$id
+                    data.featuredImage = fileId
+                    const dbPost = await appwriteService.createPost({
+                        ...data,
+                        userID: userData.$id
+                    })
+    
+                    if (dbPost)
+                        navigate(`/post/${dbPost.$id}`)
+                }
             }
 
         }
@@ -98,6 +89,7 @@ export default function PostForm({post}) {
                     label="Title :"
                     placeholder="Title"
                     className="mb-4"
+                    required={true}
                     {...register("title", { required: true })}
                 />
                 <Input
@@ -105,6 +97,7 @@ export default function PostForm({post}) {
                     placeholder="Slug"
                     className="mb-4"
                     checkDisabled = {true}
+                    required={true}
                     {...register("slug", { required: true })}
                     onInput={(e) => {
                         setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
@@ -112,13 +105,15 @@ export default function PostForm({post}) {
                 />
                 <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
             </div>
+
             <div className="w-1/3 px-2">
+                {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
                 <Input
                     label="Featured Image :"
                     type="file"
                     className="mb-4"
                     accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register("image", { required: !post })}
+                    {...register("image")}
                 />
                 {post && (
                     <div className="w-full mb-4">
